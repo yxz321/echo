@@ -4,6 +4,8 @@
 
 The EchoGUI module provides a graphical user interface (GUI) for visualizing and managing liquid handling picklists for an Echo Liquid Handler. The application allows users to load picklists in CSV format, visualize source and destination plates, and interactively inspect transfer volumes between wells.
 
+![image](https://user-images.githubusercontent.com/46896586/227127056-03bd0cf5-a8ac-4d83-9069-8105da84f892.png)
+
 ## Usage
 
 Can be used as a main function, or imported and used in a Python script. To incorporate the EchoGUI into a python script, create a Tkinter root object and pass it to the EchoGUI class constructor. Then, call the mainloop() method on the root object to start the GUI event loop.
