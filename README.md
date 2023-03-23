@@ -4,7 +4,7 @@
 
 The EchoGUI module provides a graphical user interface (GUI) for visualizing and managing liquid handling picklists for an Echo Liquid Handler. The application allows users to load picklists in CSV format, visualize source and destination plates, and interactively inspect transfer volumes between wells.
 
-![image](https://user-images.githubusercontent.com/46896586/227131757-0af46870-22c9-4153-b8b7-f46eb3ec1e4b.png)
+![image](https://user-images.githubusercontent.com/46896586/227131900-0c7bfac3-7797-4b3a-bd0a-fd9aebc6f347.png)
 
 ## Usage
 
