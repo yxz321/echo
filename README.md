@@ -6,6 +6,12 @@ The EchoGUI module provides a graphical user interface (GUI) for visualizing and
 
 ![image](https://user-images.githubusercontent.com/46896586/227131900-0c7bfac3-7797-4b3a-bd0a-fd9aebc6f347.png)
 
+* load picklist into EchoGUI for pre-transfer inspection
+* hover mouse over a well to see where the liquid from it goes / where the liquid in it comes from
+* volume calculation, a well is highlighted as red when more liquid than a user defined volume (nL) would be transferred into / out of the well
+* a (crappy) time estimation, works only for AQ_BP calibration
+* support multiple source / destination plates
+
 ## Usage
 
 Can be used as a main function, or imported and used in a Python script. To incorporate the EchoGUI into a python script, create a Tkinter root object and pass it to the EchoGUI class constructor. Then, call the mainloop() method on the root object to start the GUI event loop.
