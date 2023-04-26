@@ -14,17 +14,12 @@ The EchoGUI module provides a graphical user interface (GUI) for visualizing and
 
 ## Usage
 
-Can be used as a main function, or imported and used in a Python script. To incorporate the EchoGUI into a python script, create a Tkinter root object and pass it to the EchoGUI class constructor. Then, call the mainloop() method on the root object to start the GUI event loop.
+Can be used as a main function, or imported and used in a Python script.
 
 ```python
-import tkinter as tk
-from echogui import EchoGUI
+import echogui
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    gui = EchoGUI(root)
-    root.geometry("1920x1080")  # using full screen is suggested in 1080p
-    root.mainloop()
+echogui.new_window()  # can take window size as input, default size: "1920x1080"
 ```
 
 ## EchoGUI Class
