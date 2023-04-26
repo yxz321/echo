@@ -351,7 +351,12 @@ class EchoGUI:
         # Now, 'simplified_details' contains the simplified text
         return simplified_details
 
-
+def new_window(shape="1920x1080"):
+    root = tk.Tk()
+    root.geometry(shape)
+    gui = EchoGUI(root)
+    root.mainloop()
+    
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1920x1080")
