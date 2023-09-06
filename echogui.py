@@ -8,11 +8,9 @@ from collections import Counter
 class EchoGUI:
     """
     Developed with GPT-4
-
     The EchoGUI module provides a graphical user interface (GUI) for visualizing and managing liquid handling
     picklists for an Echo Liquid Handler. The application allows users to load picklists in CSV format,
     visualize source and destination plates, and interactively inspect transfer volumes between wells.
-
     Key features:
     *
     """
@@ -126,18 +124,20 @@ class EchoGUI:
         file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
         if file_path:
             picklist = pd.read_csv(file_path)
-            picklist['Transfer Volume'] = picklist['Transfer Volume'] // 25 * 25  # 25nL transfer unit
+            picklist['Transfer Volume'] = round(picklist['Transfer Volume'] / 25) * 25  # 25nL transfer unit
             picklist = picklist.loc[picklist['Transfer Volume'] > 0]
             self.picklist = picklist
 
             if 'Source Plate Name' not in self.picklist.columns:
                 self.picklist['Source Plate Name'] = 'sp1'
+            picklist['Source Plate Name'] = picklist['Source Plate Name'].astype(str)
             src_plates = tuple(self.picklist['Source Plate Name'].unique())
             self.src_plate_combobox['values'] = src_plates  # must be tuple, not np.array
             self.src_plate_combobox.set(src_plates[0])
 
             if 'Destination Plate Name' not in self.picklist.columns:
                 self.picklist['Destination Plate Name'] = 'dp1'
+            picklist['Destination Plate Name'] = picklist['Destination Plate Name'].astype(str)
             dst_plates = tuple(self.picklist['Destination Plate Name'].unique())
             self.dst_plate_combobox['values'] = dst_plates   # must be tuple, not np.array
             self.dst_plate_combobox.set(dst_plates[0])
@@ -179,6 +179,8 @@ class EchoGUI:
         # Filter the picklist based on the selected plates
         self.picklist_cur = self.picklist[(self.picklist['Source Plate Name'] == src_plate) 
                                           & (self.picklist['Destination Plate Name'] == dst_plate)]
+        self.picklist_cursrc = self.picklist[self.picklist['Source Plate Name'] == src_plate]
+        self.picklist_curdst = self.picklist[self.picklist['Destination Plate Name'] == dst_plate]
 
         self.src_rows = self.src_rows_var.get()
         self.src_cols = self.src_cols_var.get()
@@ -192,8 +194,8 @@ class EchoGUI:
         self.create_grid_labels(self.src_rows, self.src_cols, 0, 0, src_rect_size)
         self.create_grid_labels(self.dst_rows, self.dst_cols, 0, 330, dst_rect_size)
 
-        src_wells_used = set(self.picklist_cur['Source Well'])
-        dst_wells_used = set(self.picklist_cur['Destination Well'])
+        src_wells_used = set(self.picklist_cursrc['Source Well'])
+        dst_wells_used = set(self.picklist_curdst['Destination Well'])
 
         max_src_vol = self.src_max_vol_var.get()
         max_dst_vol = self.dst_max_vol_var.get()
@@ -205,7 +207,7 @@ class EchoGUI:
                     well_name = f"{chr(i + 65)}{j + 1}"
                 else:
                     well_name = f"A{chr(i - 26 + 65)}{j + 1}"
-                transfers = self.picklist_cur[self.picklist_cur['Source Well'] == well_name]
+                transfers = self.picklist_cursrc[self.picklist_cursrc['Source Well'] == well_name]
                 total_volume = transfers['Transfer Volume'].sum()
                 if well_name in src_wells_used and total_volume > max_src_vol:
                     fill_color = "red"
@@ -228,6 +230,8 @@ class EchoGUI:
                     well_name = f"{chr(i + 65)}{j + 1}"
                 else:
                     well_name = f"A{chr(i - 26 + 65)}{j + 1}"
+                transfers = self.picklist_curdst[self.picklist_curdst['Destination Well'] == well_name]
+                total_volume = transfers['Transfer Volume'].sum()
                 if well_name in dst_wells_used and total_volume > max_dst_vol:
                     fill_color = "red"
                 elif well_name in dst_wells_used:
@@ -356,7 +360,7 @@ def new_window(shape="1920x1080"):
     root.geometry(shape)
     gui = EchoGUI(root)
     root.mainloop()
-    
+        
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1920x1080")
